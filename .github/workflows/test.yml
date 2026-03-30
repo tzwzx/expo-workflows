@@ -7,6 +7,11 @@ on:
         description: "Commands to run (newline-separated)"
         type: string
         required: true
+      playwright:
+        description: "Install Playwright browsers"
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   test:
@@ -25,6 +30,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Install Playwright Browsers
+        if: inputs.playwright
         run: bunx playwright install --with-deps chromium
 
       - name: Run test commands
