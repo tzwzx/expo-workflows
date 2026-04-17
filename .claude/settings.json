@@ -1,10 +1,6 @@
 {
   "permissions": {
-    "additionalDirectories": [
-      "/Users/tazawa/Code/expo-workflows/.claude/skills"
-    ],
-    "allow": [
-      "Edit(/.claude/skills/update-workflow-actions/**)"
-    ]
+    "additionalDirectories": ["/Users/tazawa/Code/expo-workflows/.claude/skills"],
+    "allow": ["Edit(/.claude/skills/update-workflow-actions/**)"]
   }
 }

@@ -1,0 +1,10 @@
+{
+  "name": "expo-workflows",
+  "private": true,
+  "scripts": {
+    "format": "oxfmt --write ."
+  },
+  "devDependencies": {
+    "oxfmt": "0.45.0"
+  }
+}
