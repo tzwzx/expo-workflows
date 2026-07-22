@@ -25,9 +25,17 @@ Globで `.github/**/*.{yml,yaml}` を列挙し、Grepで各ファイルから `u
 
 各アクションについて、**メジャーバージョンタグ**（`v6` のような形式）の最新を以下の優先順位で確認する：
 
-1. **WebFetch** で `https://github.com/{owner}/{repo}/releases/latest` を取得
-2. 取得できない場合は **WebSearch** で `{owner}/{repo} github action latest major version` を検索
-3. それでも不明なら GitHub Marketplace ページや Releases 一覧を参照
+1. **`gh api`**（GET なので read-only）で最新リリースを確認する。WebFetch/WebSearch より正確で速い：
+
+   ```bash
+   gh api repos/{owner}/{repo}/releases/latest --jq '.tag_name'
+   # リリースを使っていないリポジトリはタグで確認。tags API の順序は
+   # バージョン順を保証しないので、必ずソートしてから先頭を取る:
+   gh api "repos/{owner}/{repo}/tags?per_page=100" --jq '[.[].name] | sort_by(ltrimstr("v") | split(".") | map(tonumber? // 0)) | last'
+   ```
+
+2. `gh` が使えない場合は **WebFetch** で `https://github.com/{owner}/{repo}/releases/latest` を取得
+3. それでも不明なら **WebSearch** で `{owner}/{repo} github action latest major version` を検索、または GitHub Marketplace ページを参照
 
 複数のアクションがある場合は、並列に調査すると速い。情報量が多くなりそうな場合はサブエージェント（general-purpose）に `.github/` 配下すべてのアクションの最新バージョン調査をまとめて任せる。
 
